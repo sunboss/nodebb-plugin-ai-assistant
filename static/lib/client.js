@@ -128,20 +128,64 @@
 			try {
 				if (mode === 'chat') {
 					addMsg('user', esc(text));
+					// 流式请求：逐 token 渲染
+					var botDiv = document.createElement('div');
+					botDiv.className = 'naa-msg naa-bot';
+					botDiv.innerHTML = '';
+					msgs.appendChild(botDiv);
+					setTyping(false);
+
 					var res = await fetch(API_BASE + '/chat', {
 						method: 'POST',
 						headers: { 'Content-Type': 'application/json' },
-						body: JSON.stringify({ message: text, history: history }),
+						body: JSON.stringify({ message: text, history: history, stream: true }),
 					});
-					var j = await res.json();
-					setTyping(false);
-					if (!res.ok) {
-						addMsg('bot', esc(j.error || '请求失败'));
+					if (!res.ok || !res.body) {
+						var j = await res.json().catch(function () { return {}; });
+						botDiv.textContent = j.error || '请求失败';
 					} else {
-						addMsg('bot', esc(j.answer).replace(/\n/g, '<br>'));
-						renderSources(j.sources);
+						var reader = res.body.getReader();
+						var decoder = new TextDecoder();
+						var buf = '';
+						var fullAnswer = '';
+						var sources = null;
+						while (true) {
+							var r = await reader.read();
+							if (r.done) {
+								break;
+							}
+							buf += decoder.decode(r.value, { stream: true });
+							var lines = buf.split('\n');
+							buf = lines.pop();
+							for (var i = 0; i < lines.length; i++) {
+								var line = lines[i].trim();
+								if (!line || line.indexOf('data:') !== 0) {
+									continue;
+								}
+								var dataStr = line.slice(5).trim();
+								try {
+									var evt = JSON.parse(dataStr);
+									if (evt.error) {
+										botDiv.textContent = evt.error;
+										break;
+									}
+									if (evt.token) {
+										fullAnswer += evt.token;
+										botDiv.innerHTML = esc(fullAnswer).replace(/\n/g, '<br>');
+										msgs.scrollTop = msgs.scrollHeight;
+									}
+									if (evt.done) {
+										fullAnswer = evt.answer || fullAnswer;
+										sources = evt.sources;
+									}
+								} catch (e) { /* 忽略坏行 */ }
+							}
+						}
+						if (sources) {
+							renderSources(sources);
+						}
 						history.push({ role: 'user', content: text });
-						history.push({ role: 'assistant', content: j.answer || '' });
+						history.push({ role: 'assistant', content: fullAnswer });
 						if (history.length > 10) {
 							history = history.slice(-10);
 						}
