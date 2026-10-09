@@ -54,6 +54,54 @@
 						<label class="form-label" for="aiSystemPrompt">系统提示词</label>
 						<textarea class="form-control" id="aiSystemPrompt" rows="6">{systemPrompt}</textarea>
 					</div>
+
+					<hr />
+					<h6>🤖 AI 自动回帖</h6>
+					<div class="mb-3">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" id="aiEnableAutoReply" {{{ if enableAutoReply }}}checked{{{ end }}} />
+							<label class="form-check-label" for="aiEnableAutoReply"><strong>启用自动回帖</strong>（新帖发布后 AI 自动跟帖）</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" id="aiAutoReplyOnNewTopic" {{{ if autoReplyOnNewTopic }}}checked{{{ end }}} />
+							<label class="form-check-label" for="aiAutoReplyOnNewTopic">回复新主题</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" id="aiAutoReplyOnReply" {{{ if autoReplyOnReply }}}checked{{{ end }}} />
+							<label class="form-check-label" for="aiAutoReplyOnReply">回复第一层回帖（形成对话）</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="aiAutoReplyBotUid">Bot 用户 UID</label>
+							<input type="number" class="form-control" id="aiAutoReplyBotUid" value="{autoReplyBotUid}" min="0" />
+							<div class="form-text">回帖以此用户身份发布，请先创建专用 bot 账号</div>
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="aiAutoReplyCategories">版块白名单（cid）</label>
+							<input type="text" class="form-control" id="aiAutoReplyCategories" value="{autoReplyCategories}" placeholder="如：2,5,8" />
+							<div class="form-text">逗号分隔，留空 = 全部版块</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 mb-3">
+							<label class="form-label" for="aiAutoReplyDelayMin">延迟最小（秒）</label>
+							<input type="number" class="form-control" id="aiAutoReplyDelayMin" value="{autoReplyDelayMin}" min="0" max="3600" />
+						</div>
+						<div class="col-md-4 mb-3">
+							<label class="form-label" for="aiAutoReplyDelayMax">延迟最大（秒）</label>
+							<input type="number" class="form-control" id="aiAutoReplyDelayMax" value="{autoReplyDelayMax}" min="0" max="3600" />
+						</div>
+						<div class="col-md-4 mb-3">
+							<label class="form-label" for="aiAutoReplyDailyLimit">每日上限（条）</label>
+							<input type="number" class="form-control" id="aiAutoReplyDailyLimit" value="{autoReplyDailyLimit}" min="1" max="1000" />
+						</div>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="aiAutoReplyPrompt">回帖提示词（留空用默认）</label>
+						<textarea class="form-control" id="aiAutoReplyPrompt" rows="4" placeholder="默认：热心网友风格，口语化，100字以内">{autoReplyPrompt}</textarea>
+					</div>
+
 					<button type="button" id="ai-assistant-save" class="btn btn-primary">保存</button>
 				</form>
 			</div>

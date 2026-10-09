@@ -44,4 +44,9 @@ plugin.searchQuery = async function (data) {
 	return search.enhanceQuery(data);
 };
 
+plugin.onPostSave = async function (postData) {
+	const autoreply = require('./lib/autoreply');
+	return autoreply.onPostSave(postData);
+};
+
 module.exports = plugin;
