@@ -1,1 +1,19 @@
-{"author":"sunboss","dependencies":{},"description":"AI 语义搜索与站内问答助手（1118.si 模型支持），含中文分词搜索增强","engines":{"node":">=18.0.0"},"license":"MIT","main":"library.js","name":"nodebb-plugin-ai-assistant","nbbpm":{"compatibility":"^4.0.0"},"repository":{"type":"git","url":"https://github.com/sunboss/nodebb-plugin-ai-assistant.git"},"version":"1.0.0"}
+{
+  "author": "sunboss",
+  "dependencies": {},
+  "description": "AI 语义搜索与站内问答助手（1118.si 模型支持），含中文分词搜索增强",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT",
+  "main": "library.js",
+  "name": "nodebb-plugin-ai-assistant",
+  "nbbpm": {
+    "compatibility": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunboss/nodebb-plugin-ai-assistant.git"
+  },
+  "version": "1.1.0"
+}
