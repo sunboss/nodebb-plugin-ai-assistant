@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0] - 2026-10-17
+
+### Added（通行证 rpass 无感登录，lib/passport.js）
+- 新用户用户名优先取通行证昵称；不合法时依次退回邮箱前缀、「手机用户+尾号」、「R友+随机」，不再出现 `u_xxxx`。
+- 只绑手机、没有邮箱的通行证用户可以登录（补占位邮箱 `<sub>@phone.bbs.1234r.com`，未验证），不再报 insufficient-scope。
+- 登录完成回到原页面。
+- 退出论坛时一并退出通行证（带 id_token_hint，不弹确认页），再回论坛首页。
+- 依赖 nodebb-plugin-sso-oauth2-multiple 的 `rpass` 策略；`filter:auth.init` priority 20，在其之后包装。
+
 ## [1.4.0] - 2026-10-17
 
 ### Fixed（自动跟帖，v1 实际无法工作）

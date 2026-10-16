@@ -1,1 +1,76 @@
-{"css": ["static/style.css"], "description": "AI 语义搜索、站内问答助手与自动回帖（1118.si 模型支持），含中文分词搜索增强", "hooks": [{"hook": "static:app.load", "method": "init"}, {"hook": "filter:admin.header.build", "method": "adminMenu"}, {"hook": "filter:search.query", "method": "searchQuery"}, {"hook": "action:post.save", "method": "onPostSave"}, {"hook": "action:post.edit", "method": "invalidateIndex"}, {"hook": "action:post.delete", "method": "invalidateIndex"}, {"hook": "action:post.restore", "method": "invalidateIndex"}, {"hook": "action:post.purge", "method": "invalidateIndex"}, {"hook": "action:topic.delete", "method": "invalidateIndex"}, {"hook": "action:topic.restore", "method": "invalidateIndex"}, {"hook": "action:topic.purge", "method": "invalidateIndex"}, {"hook": "action:topic.move", "method": "invalidateIndex"}, {"hook": "action:topic.edit", "method": "invalidateIndex"}], "id": "nodebb-plugin-ai-assistant", "library": "./library.js", "modules": {"../admin/plugins/ai-assistant.js": "static/lib/admin.js"}, "name": "AI Assistant", "scripts": ["static/lib/client.js"], "templates": "templates", "url": "https://github.com/sunboss/nodebb-plugin-ai-assistant"}
+{
+  "css": [
+    "static/style.css"
+  ],
+  "description": "AI 语义搜索、站内问答助手与自动回帖（1118.si 模型支持），含中文分词搜索增强",
+  "hooks": [
+    {
+      "hook": "static:app.load",
+      "method": "init"
+    },
+    {
+      "hook": "filter:auth.init",
+      "method": "authInit",
+      "priority": 20
+    },
+    {
+      "hook": "filter:admin.header.build",
+      "method": "adminMenu"
+    },
+    {
+      "hook": "filter:search.query",
+      "method": "searchQuery"
+    },
+    {
+      "hook": "action:post.save",
+      "method": "onPostSave"
+    },
+    {
+      "hook": "action:post.edit",
+      "method": "invalidateIndex"
+    },
+    {
+      "hook": "action:post.delete",
+      "method": "invalidateIndex"
+    },
+    {
+      "hook": "action:post.restore",
+      "method": "invalidateIndex"
+    },
+    {
+      "hook": "action:post.purge",
+      "method": "invalidateIndex"
+    },
+    {
+      "hook": "action:topic.delete",
+      "method": "invalidateIndex"
+    },
+    {
+      "hook": "action:topic.restore",
+      "method": "invalidateIndex"
+    },
+    {
+      "hook": "action:topic.purge",
+      "method": "invalidateIndex"
+    },
+    {
+      "hook": "action:topic.move",
+      "method": "invalidateIndex"
+    },
+    {
+      "hook": "action:topic.edit",
+      "method": "invalidateIndex"
+    }
+  ],
+  "id": "nodebb-plugin-ai-assistant",
+  "library": "./library.js",
+  "modules": {
+    "../admin/plugins/ai-assistant.js": "static/lib/admin.js"
+  },
+  "name": "AI Assistant",
+  "scripts": [
+    "static/lib/client.js"
+  ],
+  "templates": "templates",
+  "url": "https://github.com/sunboss/nodebb-plugin-ai-assistant"
+}
