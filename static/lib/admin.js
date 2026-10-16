@@ -17,6 +17,19 @@ define('admin/plugins/ai-assistant', [], function () {
 				rateLimit: $('#aiRateLimit').val(),
 				topK: $('#aiTopK').val(),
 				systemPrompt: $('#aiSystemPrompt').val(),
+				enableAutoReply: $('#aiEnableAutoReply').is(':checked') ? '1' : '0',
+				autoReplyOnNewTopic: $('#aiAutoReplyOnNewTopic').is(':checked') ? '1' : '0',
+				autoReplyOnReply: $('#aiAutoReplyOnReply').is(':checked') ? '1' : '0',
+				autoReplyBotUids: $('#aiAutoReplyBotUids').val(),
+				autoReplyCategories: $('#aiAutoReplyCategories').val(),
+				autoReplyDelayMin: $('#aiAutoReplyDelayMin').val(),
+				autoReplyDelayMax: $('#aiAutoReplyDelayMax').val(),
+				autoReplyDailyLimit: $('#aiAutoReplyDailyLimit').val(),
+				autoReplyMaxPerTopic: $('#aiAutoReplyMaxPerTopic').val(),
+				autoReplyTimezone: $('#aiAutoReplyTimezone').val(),
+				autoReplyQuietStart: $('#aiAutoReplyQuietStart').val(),
+				autoReplyQuietEnd: $('#aiAutoReplyQuietEnd').val(),
+				autoReplyPrompt: $('#aiAutoReplyPrompt').val(),
 			};
 			$.post(config.relative_path + '/api/admin/plugins/ai-assistant/save', data, function (resp) {
 				app.alertSuccess((resp && resp.message) || '已保存');

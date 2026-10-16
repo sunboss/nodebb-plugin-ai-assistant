@@ -29,6 +29,9 @@ plugin.init = async function (params) {
 	router.post('/api/plugins/ai-assistant/chat', chat.handler);
 	router.post('/api/plugins/ai-assistant/search', search.handler);
 
+	// 自动跟帖：持久化队列轮询（只在主进程）
+	require('./lib/autoreply').start();
+
 	// 启动后预热检索索引（失败不影响启动）
 	setTimeout(() => require('./lib/retrieval').getIndex().catch(() => {}), 15000);
 };
