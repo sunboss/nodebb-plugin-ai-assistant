@@ -1,106 +1,167 @@
-/* nodebb-plugin-ai-assistant — 前端样式 */
+/* nodebb-plugin-ai-assistant — 前端样式（v1.2 无感设计）
+ * 颜色全部取自 Bootstrap 5 CSS 变量，自动跟随站点亮/暗皮肤；
+ * 只保留一处品牌渐变（用户气泡），其余元素与主题同色系。
+ */
 
+:root {
+	--naa-accent: var(--bs-primary, #6d5dfc);
+	--naa-bg: var(--bs-body-bg, #fff);
+	--naa-fg: var(--bs-body-color, #212529);
+	--naa-muted: var(--bs-secondary-color, #6c757d);
+	--naa-border: var(--bs-border-color, #e5e7eb);
+	--naa-soft: var(--bs-tertiary-bg, #f5f6f8);
+	--naa-radius: 14px;
+	--naa-w: 360px;
+	--naa-h: min(540px, calc(100vh - 48px));
+	--naa-w-lg: min(560px, calc(100vw - 48px));
+	--naa-h-lg: calc(100vh - 48px);
+}
+
+.naa-ico { flex: 0 0 auto; }
+
+/* ---------- 兜底小圆点（仅无原生入口时出现） ---------- */
 #naa-fab {
 	position: fixed;
-	right: 20px;
-	bottom: 20px;
-	z-index: 9998;
-	width: 56px;
-	height: 56px;
+	right: 16px;
+	bottom: 16px;
+	z-index: 1030;
+	width: 40px;
+	height: 40px;
 	border-radius: 50%;
-	border: none;
-	cursor: pointer;
-	background: #fff;
+	border: 1px solid var(--naa-border);
+	background: var(--naa-bg);
+	color: var(--naa-muted);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	box-shadow: 0 8px 24px rgba(139, 92, 246, 0.35);
-	transition: transform 0.2s;
+	cursor: pointer;
+	opacity: 0.55;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	transition: opacity 0.2s, transform 0.25s, color 0.2s;
 }
-#naa-fab:hover {
-	transform: scale(1.08);
-}
+#naa-fab:hover,
+#naa-fab:focus-visible { opacity: 1; color: var(--naa-accent); }
+#naa-fab.naa-hide { transform: translateY(72px); opacity: 0; }
+body.naa-open #naa-fab,
+body.naa-composing #naa-fab { opacity: 0; pointer-events: none; }
 
+/* 原生入口的激活态 */
+body.naa-open .naa-entry > a,
+body.naa-open a.naa-entry { color: var(--naa-accent) !important; }
+
+/* ---------- 面板：桌面端右下角停靠 ---------- */
 #naa-panel {
 	position: fixed;
-	right: 20px;
-	bottom: 88px;
-	z-index: 9999;
-	width: 380px;
-	max-width: calc(100vw - 40px);
-	height: 520px;
-	max-height: calc(100vh - 120px);
-	background: #fff;
-	border: 1px solid #e8e8ef;
-	border-radius: 18px;
-	display: none;
+	right: 24px;
+	bottom: 24px;
+	z-index: 1045; /* 低于 Bootstrap modal(1055)，高于 sticky 元素 */
+	width: var(--naa-w);
+	max-width: calc(100vw - 32px);
+	height: var(--naa-h);
+	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+	background: var(--naa-bg);
+	color: var(--naa-fg);
+	border: 1px solid var(--naa-border);
+	border-radius: var(--naa-radius);
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.06);
+	font-size: 0.875rem;
+	/* 关闭态：透明 + 轻微下沉，不占交互 */
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(12px) scale(0.98);
+	transform-origin: bottom right;
+	transition: opacity 0.18s ease, transform 0.22s ease, visibility 0s linear 0.22s,
+		width 0.22s ease, height 0.22s ease;
 }
 #naa-panel.open {
-	display: flex;
+	opacity: 1;
+	visibility: visible;
+	transform: none;
+	transition: opacity 0.18s ease, transform 0.22s ease, visibility 0s,
+		width 0.22s ease, height 0.22s ease;
 }
+#naa-panel.naa-large {
+	width: var(--naa-w-lg);
+	height: var(--naa-h-lg);
+}
+/* 有右侧栏时让出侧栏宽度（Harmony 右栏约 64px） */
+@media (min-width: 992px) {
+	body:has([component="sidebar/right"]) #naa-panel { right: 80px; }
+}
+
+.naa-grip { display: none; }
+
+/* ---------- 头部：一行搞定（图标 + 分段切换 + 操作） ---------- */
 #naa-head {
-	padding: 0.9rem 1.1rem;
-	background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
-	color: #fff;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	gap: 8px;
+	padding: 10px 10px 10px 14px;
+	border-bottom: 1px solid var(--naa-border);
 }
-#naa-head b {
-	font-size: 1rem;
-}
-#naa-head small {
-	display: block;
-	font-size: 0.75rem;
-	opacity: 0.85;
-	font-weight: 400;
-}
-#naa-close {
-	background: rgba(255, 255, 255, 0.2);
-	border: none;
-	color: #fff;
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	cursor: pointer;
-	font-size: 16px;
+.naa-title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: var(--naa-accent);
+	min-width: 0;
 }
 #naa-tabs {
-	display: flex;
-	border-bottom: 1px solid #eee;
+	display: inline-flex;
+	padding: 2px;
+	border-radius: 8px;
+	background: var(--naa-soft);
 }
 #naa-tabs button {
-	flex: 1;
-	border: none;
-	background: none;
-	padding: 0.6rem;
+	border: 0;
+	background: transparent;
+	color: var(--naa-muted);
+	font-size: 0.8125rem;
+	padding: 3px 10px;
+	border-radius: 6px;
 	cursor: pointer;
-	font-size: 0.9rem;
-	color: #666;
-	border-bottom: 2px solid transparent;
+	line-height: 1.5;
 }
 #naa-tabs button.on {
-	color: #8b5cf6;
-	border-bottom-color: #8b5cf6;
+	background: var(--naa-bg);
+	color: var(--naa-fg);
 	font-weight: 600;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
+.naa-actions { display: flex; gap: 2px; }
+.naa-actions button {
+	width: 28px;
+	height: 28px;
+	border: 0;
+	border-radius: 6px;
+	background: transparent;
+	color: var(--naa-muted);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+.naa-actions button:hover { background: var(--naa-soft); color: var(--naa-fg); }
+
+/* ---------- 消息区 ---------- */
 #naa-msgs {
 	flex: 1;
 	overflow-y: auto;
-	padding: 1rem;
+	overscroll-behavior: contain; /* 滚到底不带动页面 */
+	padding: 14px;
 	display: flex;
 	flex-direction: column;
-	gap: 0.7rem;
+	gap: 10px;
+	scrollbar-width: thin;
 }
 .naa-msg {
-	max-width: 85%;
-	padding: 0.6rem 0.9rem;
-	border-radius: 14px;
-	font-size: 0.9rem;
-	line-height: 1.5;
+	max-width: 88%;
+	padding: 8px 12px;
+	border-radius: 12px;
+	line-height: 1.6;
 	word-break: break-word;
 }
 .naa-user {
@@ -111,78 +172,138 @@
 }
 .naa-bot {
 	align-self: flex-start;
-	background: #f3f4f6;
-	color: #333;
+	background: var(--naa-soft);
+	color: var(--naa-fg);
 	border-bottom-left-radius: 4px;
 }
-.naa-typing {
-	opacity: 0.7;
+#naa-panel.naa-large .naa-msg { max-width: 92%; }
+
+.naa-dots { display: inline-flex; gap: 4px; padding: 4px 0; }
+.naa-dots i {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--naa-muted);
+	animation: naa-blink 1.2s infinite ease-in-out both;
 }
+.naa-dots i:nth-child(2) { animation-delay: 0.15s; }
+.naa-dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes naa-blink {
+	0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); }
+	40% { opacity: 1; transform: none; }
+}
+
+/* 欢迎态：一句话 + 三个建议，不放大段说明 */
+.naa-welcome { margin: auto 0; text-align: center; color: var(--naa-muted); }
+.naa-welcome p { margin: 0 0 12px; }
+.naa-welcome .naa-kbd { margin: 14px 0 0; font-size: 0.75rem; opacity: 0.7; }
+.naa-chips { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.naa-chip {
+	border: 1px solid var(--naa-border);
+	background: var(--naa-bg);
+	color: var(--naa-fg);
+	border-radius: 999px;
+	padding: 5px 12px;
+	font-size: 0.8125rem;
+	cursor: pointer;
+	max-width: 100%;
+}
+.naa-chip:hover { border-color: var(--naa-accent); color: var(--naa-accent); }
+
+/* ---------- 参考帖子 ---------- */
 #naa-srcs {
-	max-height: 110px;
+	max-height: 120px;
 	overflow-y: auto;
-	padding: 0 1rem 0.5rem;
+	padding: 8px 14px;
+	border-top: 1px dashed var(--naa-border);
 	display: flex;
 	flex-direction: column;
-	gap: 0.25rem;
+	gap: 2px;
 }
-#naa-srcs:empty {
-	display: none;
-}
-.naa-src-title {
-	font-size: 0.75rem;
-	color: #999;
-	margin-bottom: 0.15rem;
-}
+#naa-srcs:empty { display: none; }
+.naa-src-title { font-size: 0.75rem; color: var(--naa-muted); margin-bottom: 2px; }
 #naa-srcs a {
-	font-size: 0.82rem;
-	color: #6d28d9;
+	font-size: 0.8125rem;
+	color: var(--naa-accent);
 	text-decoration: none;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-#naa-srcs a:hover {
-	text-decoration: underline;
-}
+#naa-srcs a::before { content: '↳ '; color: var(--naa-muted); }
+#naa-srcs a:hover { text-decoration: underline; }
+
+/* ---------- 输入区 ---------- */
 #naa-inputbar {
 	display: flex;
-	gap: 0.5rem;
-	padding: 0.8rem 1rem;
-	border-top: 1px solid #eee;
+	align-items: flex-end;
+	gap: 8px;
+	margin: 0;
+	padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+	border-top: 1px solid var(--naa-border);
 }
 #naa-input {
 	flex: 1;
-	border: 1px solid #ddd;
-	border-radius: 20px;
-	padding: 0.5rem 1rem;
-	font-size: 0.9rem;
+	resize: none;
+	min-height: 36px;
+	max-height: 120px;
+	border: 1px solid var(--naa-border);
+	border-radius: 10px;
+	padding: 7px 12px;
+	font: inherit;
+	line-height: 1.5;
+	color: var(--naa-fg);
+	background: var(--naa-bg);
 	outline: none;
 }
-#naa-input:focus {
-	border-color: #8b5cf6;
-}
+#naa-input:focus { border-color: var(--naa-accent); }
 #naa-send {
-	border: none;
-	border-radius: 20px;
-	padding: 0.5rem 1.1rem;
-	background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+	flex: 0 0 36px;
+	height: 36px;
+	border: 0;
+	border-radius: 10px;
+	background: var(--naa-accent);
 	color: #fff;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	cursor: pointer;
-	font-size: 0.9rem;
 }
-#naa-send:disabled {
-	opacity: 0.6;
-	cursor: default;
+#naa-send:disabled { opacity: 0.45; cursor: default; }
+
+/* ---------- 写帖子时让位 ---------- */
+body.naa-composing #naa-panel { display: none; }
+
+/* ---------- 移动端：底部抽屉 ---------- */
+@media (max-width: 991.98px) {
+	#naa-panel,
+	#naa-panel.naa-large {
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		max-width: 100%;
+		height: 82dvh;
+		border-radius: 16px 16px 0 0;
+		border-bottom: 0;
+		transform: translateY(100%);
+		transform-origin: bottom center;
+		z-index: 1046; /* 盖住 Harmony 底栏(fixed-bottom 1030) */
+	}
+	#naa-panel.open { transform: none; }
+	.naa-grip {
+		display: block;
+		width: 36px;
+		height: 4px;
+		margin: 8px auto 0;
+		border-radius: 2px;
+		background: var(--naa-border);
+	}
+	#naa-size { display: none; } /* 移动端尺寸固定，不需要放大 */
+	#naa-input { font-size: 16px; } /* 防止 iOS 聚焦时自动缩放 */
+	#naa-fab { bottom: 76px; } /* 避开底栏 */
 }
 
-@media (max-width: 480px) {
-	#naa-panel {
-		right: 10px;
-		bottom: 80px;
-	}
-	#naa-fab {
-		right: 14px;
-		bottom: 14px;
-	}
+@media (prefers-reduced-motion: reduce) {
+	#naa-panel, #naa-fab, .naa-dots i { transition: none; animation: none; }
 }

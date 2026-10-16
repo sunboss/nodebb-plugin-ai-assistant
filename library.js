@@ -28,6 +28,9 @@ plugin.init = async function (params) {
 	// 公开 API（限流在 handler 内做）
 	router.post('/api/plugins/ai-assistant/chat', chat.handler);
 	router.post('/api/plugins/ai-assistant/search', search.handler);
+
+	// 启动后预热检索索引（失败不影响启动）
+	setTimeout(() => require('./lib/retrieval').getIndex().catch(() => {}), 15000);
 };
 
 plugin.adminMenu = async function (header) {
@@ -45,8 +48,14 @@ plugin.searchQuery = async function (data) {
 };
 
 plugin.onPostSave = async function (postData) {
+	require('./lib/retrieval').markDirty();
 	const autoreply = require('./lib/autoreply');
 	return autoreply.onPostSave(postData);
+};
+
+// 帖子/主题变更后让检索索引失效（下次提问时后台重建）
+plugin.invalidateIndex = async function () {
+	require('./lib/retrieval').markDirty();
 };
 
 module.exports = plugin;
