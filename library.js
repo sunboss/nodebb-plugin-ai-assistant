@@ -45,6 +45,10 @@ plugin.authInit = async function (strategies) {
 	return require('./lib/passport').authInit(strategies);
 };
 
+plugin.authOptions = async function (data) {
+	return require('./lib/passport').authOptions(data);
+};
+
 plugin.adminMenu = async function (header) {
 	header.plugins.push({
 		route: '/plugins/ai-assistant',

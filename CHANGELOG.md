@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0] - 2026-10-17
+
+### Added
+- 通行证登录支持 PKCE (S256)：发起 /auth/rpass 时生成 code_verifier 存会话（一次性），授权地址带 code_challenge，换 token 时带 code_verifier。
+  不使用 sso-oauth2-multiple 的 usePkce（它会关闭 NodeBB 核心 state 校验）；state 仍由核心校验。
+  rpass 侧可随后开启 app-nodebb 的 require_pkce。
+
 ## [1.5.1] - 2026-10-17
 
 ### Fixed
