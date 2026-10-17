@@ -54,7 +54,7 @@
       "method": "invalidateIndex"
     },
     {
-      "hook": "action:topic.purge",
+      "hook": "action:topics.purge",
       "method": "invalidateIndex"
     },
     {

@@ -117,6 +117,13 @@
 							<div class="form-text">两者相同 = 不静默</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="aiAutoReplyFollowupRate">接话概率（%）</label>
+							<input type="number" class="form-control" id="aiAutoReplyFollowupRate" value="{autoReplyFollowupRate}" min="0" max="100" />
+							<div class="form-text">首条跟帖后，再由另一个人设接话的概率；0 = 关闭</div>
+						</div>
+					</div>
 					<div class="mb-3">
 						<label class="form-label" for="aiAutoReplyPrompt">补充要求（可选）</label>
 						<textarea class="form-control" id="aiAutoReplyPrompt" rows="3" placeholder="如：语气更随意一些；多聊别墅项目经验">{autoReplyPrompt}</textarea>

@@ -26,6 +26,7 @@ define('admin/plugins/ai-assistant', [], function () {
 				autoReplyDelayMax: $('#aiAutoReplyDelayMax').val(),
 				autoReplyDailyLimit: $('#aiAutoReplyDailyLimit').val(),
 				autoReplyMaxPerTopic: $('#aiAutoReplyMaxPerTopic').val(),
+				autoReplyFollowupRate: $('#aiAutoReplyFollowupRate').val(),
 				autoReplyTimezone: $('#aiAutoReplyTimezone').val(),
 				autoReplyQuietStart: $('#aiAutoReplyQuietStart').val(),
 				autoReplyQuietEnd: $('#aiAutoReplyQuietEnd').val(),
