@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1] - 2026-10-17
+
+### Fixed
+- 通行证登录回调永远失败（Unable to verify authorization request state），登录码未被兑换，用户始终未登录。
+  原因：NodeBB 核心以字符串传入 state，passport 不在会话保存；插件又启用 state:true 去会话校验。
+  核心已在回调前校验 ssoState，故替换 passport 的重复 state 校验为空实现。
+
 ## [1.5.0] - 2026-10-17
 
 ### Added（通行证 rpass 无感登录，lib/passport.js）
